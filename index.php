@@ -33,7 +33,7 @@ session_start();
 					<div class="d-table-cell align-middle">
 
 						<div class="text-center mt-4">
-							<h1 class="h2">Welcome!</h1>
+							<h1 class="h2">Welcome to eRepository System!</h1>
 							<p class="lead">
 								Login to your account to continue
 							</p>

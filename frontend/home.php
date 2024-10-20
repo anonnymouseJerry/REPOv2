@@ -1,5 +1,6 @@
 <?php include'../backend/session.php'; 
 include '../backend/db.php';
+include "../backEnd/function.php";
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +24,7 @@ include '../backend/db.php';
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-	<title>AdminKit Demo - Bootstrap 5 Admin Template</title>
+	<title>eRepository System</title>
 
 	<link href="../static/css/app.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
@@ -47,19 +48,30 @@ include '../backend/db.php';
 			<main class="content">
 				<div class="container-fluid p-0">
 
-					<h1 class="h3 mb-3"><strong>Analytics</strong> Dashboard |
+					<h1 class="h3 mb-3"><strong>Dashboard</strong> |
 
 
 <?php
-        $getOfficess =  1 ;
 
-        if ($getOfficess == 0) {
-            echo "CICT";
-        } elseif ($getOfficess == 1) {
-            echo "COED";
-        } else {
-            echo 'All Offices';
-        }
+if (isset($_SESSION['id'])) { // Assuming the session variable is 'id'
+    // Retrieve user data from the database
+    $user_id = $_SESSION['id'];
+    $query = "SELECT * FROM users WHERE id = '$user_id'"; // Use 'id' for the query
+    $result = $conn->query($query);
+
+    if ($result->num_rows == 1) {
+        $user_data = $result->fetch_assoc();
+
+        // Get the access type ID
+        $office_id = $user_data['office_id'];
+
+            if ($office_id == 0) {
+				echo "All Offices";
+			} else{
+				echo officeName($user_data['office_id']);
+			}
+		}
+	}
 ?> 
                 </h1>
 
@@ -72,6 +84,12 @@ include '../backend/db.php';
                         <div class="card-body">
                             <div class="row">
                                 <div class="col mt-0">
+								<?php
+								$query = "SELECT count(*) AS user_count FROM users";
+								$result = $conn->query($query);
+								$row = $result->fetch_assoc(); // Fetch the result as an associative array
+								?>
+
                                     <h5 class="card-title">Number of Users</h5>
                                 </div>
                                 <div class="col-auto">
@@ -80,7 +98,7 @@ include '../backend/db.php';
                                     </div>
                                 </div>
                             </div>
-                            <h1 class="mt-1 mb-4" style="font-size:38px;">14</h1>
+                            <h1 class="mt-1 mb-4" style="font-size:38px;"><?php echo $row['user_count']; ?></h1>
                         </div>
                     </div>
                 </div>

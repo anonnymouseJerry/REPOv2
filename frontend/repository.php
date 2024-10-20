@@ -1,5 +1,6 @@
 <?php include'../backend/session.php'; 
 include '../backend/db.php';
+include "../backEnd/function.php";
 ?>
 
 <!DOCTYPE html>
@@ -23,7 +24,7 @@ include '../backend/db.php';
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-	<title>Blank Page | AdminKit Demo</title>
+	<title>eRepository System</title>
 
 	<link href="../static/css/app.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
@@ -44,20 +45,31 @@ include '../backend/db.php';
 			<main class="content">
 				<div class="container-fluid p-0">
 
-					<h1 class="h3 mb-3">Repositories |
+					<h1 class="h3 mb-3"><strong>Repositories</strong> |
 
+					<?php
 
-<?php
-        $getOfficess =  1 ;
+if (isset($_SESSION['id'])) { // Assuming the session variable is 'id'
+    // Retrieve user data from the database
+    $user_id = $_SESSION['id'];
+    $query = "SELECT * FROM users WHERE id = '$user_id'"; // Use 'id' for the query
+    $result = $conn->query($query);
 
-        if ($getOfficess == 0) {
-            echo "CICT";
-        } elseif ($getOfficess == 1) {
-            echo "COED";
-        } else {
-            echo 'All Offices';
-        }
+    if ($result->num_rows == 1) {
+        $user_data = $result->fetch_assoc();
+
+        // Get the access type ID
+        $office_id = $user_data['office_id'];
+
+		if ($office_id == 0) {
+			echo "All Offices";
+		} else{
+			echo officeName($user_data['office_id']);
+		}
+		}
+	}
 ?> 
+
                     </h1>
 
 					<div class="row">
