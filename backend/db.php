@@ -2,13 +2,14 @@
     $host ="localhost";
     $user ="root";
     $password ="";
-    $database ="repo";
+    $database ="erepo";
 
-    $conn = mysqli_connect($host, $user, $password, $database);
+// Create connection
+$conn = new mysqli($host, $user, $password, $database);
 
-    if(mysqli_connect_error()) {
-        echo 'error';
-    }else{
-        echo'nice';
-    }
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
 ?>

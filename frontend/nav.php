@@ -119,7 +119,7 @@ elseif($user == 2){
 <nav id="sidebar" class="sidebar js-sidebar">
 <div class="sidebar-content js-simplebar">
     <a class="sidebar-brand" href="index.html">
-<span class="align-middle">AdminKit</span>
+<span class="align-middle">Logo here</span>
 </a>
 
     <ul class="sidebar-nav">
@@ -137,23 +137,24 @@ echo '            <i class="align-middle" data-feather="user"></i> <span class="
 echo '        </a>';
 echo '    </li>';
 
-echo '<li class="sidebar-item ' . ($current_page == 'pages-sign-in.html' ? 'active' : '') . '">';
-echo '        <a class="sidebar-link" href="pages-sign-in.html">';
-echo '            <i class="align-middle" data-feather="log-in"></i> <span class="align-middle">Sign In</span>';
+echo '<li class="sidebar-item ' . ($current_page == 'user.php' ? 'active' : '') . '">';
+echo '        <a class="sidebar-link" href="user.php">';
+echo '            <i class="align-middle" data-feather="log-in"></i> <span class="align-middle">Users</span>';
 echo '        </a>';
 echo '    </li>';
 
-echo '<li class="sidebar-item ' . ($current_page == 'pages-sign-up.html' ? 'active' : '') . '">';
-echo '        <a class="sidebar-link" href="pages-sign-up.html">';
-echo '            <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Sign Up</span>';
+echo '<li class="sidebar-item ' . ($current_page == 'archived.php' ? 'active' : '') . '">';
+echo '        <a class="sidebar-link" href="archived.php">';
+echo '            <i class="align-middle" data-feather="user-plus"></i> <span class="align-middle">Archived</span>';
 echo '        </a>';
 echo '    </li>';
 
-echo '<li class="sidebar-item ' . ($current_page == 'pages-blank.html' ? 'active' : '') . '">';
-echo '        <a class="sidebar-link" href="pages-blank.html">';
-echo '            <i class="align-middle" data-feather="book"></i> <span class="align-middle">Blank</span>';
-echo '        </a>';
-echo '    </li>
+// echo '<li class="sidebar-item ' . ($current_page == 'pages-blank.html' ? 'active' : '') . '">';
+// echo '        <a class="sidebar-link" href="pages-blank.html">';
+// echo '            <i class="align-middle" data-feather="book"></i> <span class="align-middle">Blank</span>';
+// echo '        </a>';
+// echo '    </li>
+echo'
 </ul>
 
 </div>

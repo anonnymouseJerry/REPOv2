@@ -14,6 +14,9 @@
 
 	<link rel="canonical" href="https://demo-basic.adminkit.io/pages-sign-up.html" />
 
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+
 	<title>Sign Up | AdminKit Demo</title>
 
 	<link href="static/css/app.css" rel="stylesheet">
@@ -35,32 +38,48 @@
 						</div>
 
 						<div class="card">
-							<div class="card-body">
-								<div class="m-sm-3">
-									<form>
-										<div class="mb-3">
-											<label class="form-label">Full name</label>
-											<input class="form-control form-control-lg" type="text" name="name" placeholder="Enter your name" />
-										</div>
-										<div class="mb-3">
-											<label class="form-label">Email</label>
-											<input class="form-control form-control-lg" type="email" name="email" placeholder="Enter your email" />
-										</div>
-										<div class="mb-3">
-											<label class="form-label">Password</label>
-											<input class="form-control form-control-lg" type="password" name="password" placeholder="Enter password" />
-										</div>
-										<div class="mb-3">
-											<label class="form-label">Confirm Password</label>
-											<input class="form-control form-control-lg" type="password" name="password" placeholder="Enter password" />
-										</div>
-										<div class="d-grid gap-2 mt-3">
-											<a href="index.html" class="btn btn-lg btn-primary">Sign up</a>
-										</div>
-									</form>
-								</div>
-							</div>
-						</div>
+    <div class="card-body">
+        <div class="m-sm-3">
+            <form action="backend/signup_auth.php" method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Full Name</label>
+                    <input class="form-control form-control-lg" type="text" name="name" placeholder="Enter your name" required 
+                    value="<?php echo isset($_GET['name']) ? htmlspecialchars($_GET['name']) : ''; ?>" />
+                    <?php if (isset($_GET['name_error'])): ?>
+                        <div style="color: red;"><?php echo htmlspecialchars($_GET['name_error']); ?></div>
+                    <?php endif; ?>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input class="form-control form-control-lg" type="email" name="email" placeholder="Enter your email" required 
+                    value="<?php echo isset($_GET['email']) ? htmlspecialchars($_GET['email']) : ''; ?>" />
+                    <?php if (isset($_GET['email_error'])): ?>
+                        <div style="color: red;"><?php echo htmlspecialchars($_GET['email_error']); ?></div>
+                    <?php endif; ?>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input class="form-control form-control-lg" type="password" name="password" placeholder="Enter password" required />
+                    <?php if (isset($_GET['password_error'])): ?>
+                        <div style="color: red;"><?php echo htmlspecialchars($_GET['password_error']); ?></div>
+                    <?php endif; ?>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Confirm Password</label>
+                    <input class="form-control form-control-lg" type="password" name="confirm_password" placeholder="Confirm password" required />
+                    <?php if (isset($_GET['confirm_password_error'])): ?>
+                        <div style="color: red;"><?php echo htmlspecialchars($_GET['confirm_password_error']); ?></div>
+                    <?php endif; ?>
+                </div>
+                <div class="d-grid gap-2 mt-3">
+                    <button type="submit" class="btn btn-lg btn-primary">Sign Up</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 						<div class="text-center mb-3">
 							Already have account? <a href="index.php">Log In</a>
 						</div>
