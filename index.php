@@ -33,7 +33,11 @@ session_start();
 					<div class="d-table-cell align-middle">
 
 						<div class="text-center mt-4">
-							<h1 class="h2">Welcome to eRepository System!</h1>
+							<a class="sidebar-brand" href="index.html">
+                            	<span class="align-middle">
+                            	    <img src="src/img/logo/eRepo_logo.png" class="img-fluid" style="max-width: 200px; height: auto;">
+                            	</span>
+                        	</a> 
 							<p class="lead">
 								Login to your account to continue
 							</p>

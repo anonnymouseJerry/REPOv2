@@ -44,8 +44,13 @@ include "../backEnd/function.php";
 
 			<main class="content">
 				<div class="container-fluid p-0">
-
-					<h1 class="h3 mb-3"><strong>Repositories</strong> |
+					<div class="row">
+						<div class="col-12">
+							<div class="card">
+								<div class="card-header">
+									<div class="row">
+										<div class="col-6">
+										<h1 class="h3 mt-2"><strong>Repositories</strong> |
 
 					<?php
 
@@ -71,14 +76,65 @@ if (isset($_SESSION['id'])) { // Assuming the session variable is 'id'
 ?> 
 
                     </h1>
-
-					<div class="row">
-						<div class="col-12">
-							<div class="card">
-								<div class="card-header">
-									<h5 class="card-title mb-0">Empty card</h5>
+										</div>
+										<div class="col-6">
+										<button class="btn btn-primary float-end" id="create-folder">Create Folder</button>
+            							<input type="file" id="file-upload" class="d-none" />
+            							<button class="btn btn-success float-end mr-1" id="upload-file">Upload File</button>
+										</div>
+									</div>
 								</div>
 								<div class="card-body">
+        						<div id="repository" class="list-group"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const repositoryElement = document.getElementById('repository');
+            const createFolderButton = document.getElementById('create-folder');
+            const uploadFileButton = document.getElementById('upload-file');
+            const fileUploadInput = document.getElementById('file-upload');
+
+            // Sample repository data
+            const repositoryData = [
+                { id: 1, name: 'Folder 1', type: 'folder' },
+                { id: 2, name: 'File 1.txt', type: 'file' },
+                { id: 3, name: 'Folder 2', type: 'folder' }
+            ];
+
+            function renderRepository() {
+                repositoryElement.innerHTML = ''; // Clear existing items
+                repositoryData.forEach(item => {
+                    const listItem = document.createElement('a');
+                    listItem.className = 'list-group-item list-group-item-action';
+                    listItem.textContent = item.name;
+                    repositoryElement.appendChild(listItem);
+                });
+            }
+
+            createFolderButton.addEventListener('click', function () {
+                const folderName = prompt('Enter folder name:');
+                if (folderName) {
+                    repositoryData.push({ id: repositoryData.length + 1, name: folderName, type: 'folder' });
+                    renderRepository();
+                }
+            });
+
+            uploadFileButton.addEventListener('click', function () {
+                fileUploadInput.click();
+            });
+
+            fileUploadInput.addEventListener('change', function () {
+                const file = fileUploadInput.files[0];
+                if (file) {
+                    repositoryData.push({ id: repositoryData.length + 1, name: file.name, type: 'file' });
+                    renderRepository();
+                    fileUploadInput.value = ''; // Reset file input
+                }
+            });
+
+            renderRepository(); // Initial render
+        });
+    </script>
 								</div>
 							</div>
 						</div>

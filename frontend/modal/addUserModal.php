@@ -21,7 +21,7 @@
             <input class="form-control" type="password" name="password" placeholder="Enter password" required autocomplete="new-password" />
           </div>
           <div class="mb-3">
-            <label class="form-label">Office ID</label>
+            <label class="form-label">College/Department</label>
             <select class="form-select" name="office_id" required>
               <option value="" disabled selected>Select office</option>
               <?php
@@ -35,7 +35,7 @@
             </select>
           </div>
           <div class="mb-3">
-            <label class="form-label">Access Type ID</label>
+            <label class="form-label">Accesstype</label>
             <select class="form-select" name="accesstype_id" required>
               <option value="" disabled selected>Select access type</option>
               <?php
