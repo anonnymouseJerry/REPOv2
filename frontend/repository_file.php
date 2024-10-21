@@ -52,30 +52,50 @@ include "../backEnd/function.php";
 								<div class="card-header">
 									<div class="row">
 										<div class="col-6">
-										<h1 class="h3 mt-2"><strong>Repository</strong> |
-										<?php
+										<h1 class="h3 mt-2">
+    <strong>
+        <a href="repository.php" style="text-decoration: none; color: #007BFF; font-weight: bold;">
+            Repository |
+        </a>
+    </strong>
+    <?php
+    if (isset($_SESSION['id'])) { // Check if the session variable 'id' is set
+        // Retrieve user data from the database
+        $user_id = $_SESSION['id'];
+        $query = "SELECT * FROM users WHERE id = '$user_id'"; // Use 'id' for the query
+        $result = $conn->query($query);
+        
+        if ($result->num_rows == 1) {
+            $user_data = $result->fetch_assoc();
+            
+            // Get the access type ID
+            $office_id = $user_data['office_id'];
+            
+            // Display office name as a clickable link
+            if ($office_id == 0) {
+                echo '<a href="repository.php" style="text-decoration: none; color: #007BFF; font-weight: bold;">All Offices</a>';
+            } else {
+                echo '<a href="repository.php" style="text-decoration: none; color: #007BFF; font-weight: bold;">' . officeName($user_data['office_id']) . '</a>';
+            }
 
-										if (isset($_SESSION['id'])) { // Assuming the session variable is 'id'
-										// Retrieve user data from the database
-										$user_id = $_SESSION['id'];
-										$query = "SELECT * FROM users WHERE id = '$user_id'"; // Use 'id' for the query
-										$result = $conn->query($query);
-										
-										if ($result->num_rows == 1) {
-										$user_data = $result->fetch_assoc();
-										
-										// Get the access type ID
-										$office_id = $user_data['office_id'];
-										
-										if ($office_id == 0) {
-											echo "All Offices";
-										} else{
-											echo officeName($user_data['office_id']);
-										}
-										}
-										}
-										?> 
-										</h1> 
+            // Fetch the repository title
+            $repo_query = "SELECT title FROM repo_folder WHERE user_id = '$user_id' LIMIT 1"; // Adjust the query as necessary
+            $repo_result = $conn->query($repo_query);
+            $repo_title = "";
+            if ($repo_result->num_rows > 0) {
+                $repo_data = $repo_result->fetch_assoc();
+                $repo_title = htmlspecialchars($repo_data['title']); // Escape output
+            }
+
+            // Display the repository title as a clickable link if it exists
+            if ($repo_title) {
+                echo ' > ' . $repo_title ;
+            }
+        }
+    }
+    ?>
+</h1>
+
 
 										</div>
 										<div class="col-6">
@@ -83,7 +103,7 @@ include "../backEnd/function.php";
 										<?php include'modal/repoModal.php';?>
 
 											<button type="button" class="btn btn-primary float-end"
-											data-bs-toggle="modal" data-bs-target="#addUserModal">Create Folder</button>
+											data-bs-toggle="modal" data-bs-target="#addUserModal">Add File</button>
 									</div>
 									</div>
 								</div>
@@ -92,7 +112,7 @@ include "../backEnd/function.php";
 								<table id="usersTable" class="display">
         <thead>
             <tr>
-                <th>Title</th>
+                <th>File Name</th>
                 <th>Date Created</th>
 				<th>Uploader Name</th>
                 <th>Action</th>
@@ -101,20 +121,20 @@ include "../backEnd/function.php";
         <tbody>
             <?php
 			// Fetch data
-			$sql = "SELECT * FROM repo_folder";
+			$sql = "SELECT * FROM repo_file";
 			$result = $conn->query($sql);
 
             if ($result->num_rows > 0) {
                 // Output data of each row
                 while($row = $result->fetch_assoc()) {
-                    echo '<tr onclick="handleRowClick(' . htmlspecialchars($row['repo_id'], ENT_QUOTES) . ')" style="cursor: pointer;">
-        <td>' . htmlspecialchars($row['title']) . '</td>
-        <td>' . htmlspecialchars($row['dateCreated']) . '</td>
+                    echo '<tr>
+        <td>' . htmlspecialchars($row['file_name']) . '</td>
+        <td>' . htmlspecialchars($row['dateUploaded']) . '</td>
         <td>' . htmlspecialchars(UploaderName($row['user_id'])) . '</td>
         <td>
             <i class="align-middle" type="button" data-bs-toggle="modal" 
                data-bs-target="#editModal" 
-               onclick="event.stopPropagation(); setEditUserData(' . $row['repo_id'] . ', \'' . addslashes($row['title']) . '\')" 
+               onclick="event.stopPropagation(); setEditUserData(' . $row['repo_id'] . ', \'' . addslashes($row['file_name']) . '\')" 
                data-feather="edit"></i>
             <i class="align-middle" type="button" data-bs-toggle="modal" 
                data-bs-target="#deleteUserModal" 
@@ -174,15 +194,6 @@ include "../backEnd/function.php";
         $(document).ready(function() {
             $('#usersTable').DataTable();
         });
-    </script>
-
-<script>
-        function handleRowClick(repoId) {
-    // You can open a modal, redirect, or perform any action here
-    console.log("Row clicked with repo ID:", repoId);
-    // Example: Redirect to a details page
-    window.location.href = 'repository_file.php?repo_id=' + repoId;
-}
     </script>
 
 
