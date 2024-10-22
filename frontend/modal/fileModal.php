@@ -8,7 +8,7 @@
       </div>
       <div class="modal-body">
         <form id="addFileForm" action="../backend/fileAdd.php" method="POST" enctype="multipart/form-data">
-          <input type="hidden" name="repo_id" value="<?php echo $repoId; ?>" />
+          <input type="hidden" name="repo_id" value="<?php echo $_SESSION['repo_id']; ?>" />
           <div class="mb-3">
             <label class="form-label">File Name</label>
             <input class="form-control" type="text" name="file_name" placeholder="Enter file name" required autocomplete="off" />
@@ -27,21 +27,22 @@
 </div>
 
 
-<!-- Delete Folder Modal -->
+
+<!-- Delete File Modal -->
 <div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="deleteUserModalLabel">Delete Folder</h5>
+        <h5 class="modal-title" id="deleteUserModalLabel">Delete File</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p>Are you sure you want to delete this folder?</p>
+        <p>Are you sure you want to delete this file?</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-        <form id="deleteUserForm" action="../backend/repoDelete.php" method="POST">
-          <input type="hidden" name="repo_id" id="repo_id" value="" /> <!-- Use 'repo_id' for folder ID -->
+        <form id="deleteUserForm" action="../backend/fileDelete.php" method="POST">
+          <input type="hidden" name="file_id" id="file_id" value="" /> <!-- Use 'file_id' for file ID -->
           <button type="submit" class="btn btn-danger">Delete</button>
         </form>
       </div>
@@ -50,31 +51,29 @@
 </div>
 
 <script>
-  // Function to set folder ID in the modal
-  function setDeleteFolderId(folderId) {
-    document.getElementById('repo_id').value = folderId; // Set repo_id in the hidden input
+  // Function to set file ID in the modal
+  function setDeleteFolderId(fileId) {
+    document.getElementById('file_id').value = fileId; // Set file_id in the hidden input
   }
 </script>
 
 
-<!-- Edit User Modal -->
+<!-- Edit Modal -->
 <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="editModalLabel">Repository Title Edit</h5>
+        <h5 class="modal-title" id="editModalLabel">Edit File Name</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <form id="editUserForm" action="../backend/repoEdit.php" method="POST">
-          <input type="hidden" name="repo_id" id="edit_user_id" value="" /> <!-- Hidden field for repo ID -->
+        <form action="../backend/fileUpdate.php" method="POST">
+          <input type="hidden" name="file_id" id="file_id" value="" />
           <div class="mb-3">
-            <label class="form-label">Title</label>
-            <input class="form-control" type="text" name="title" id="edit_name" placeholder="Enter repository title" required autocomplete="off" />
+            <label for="original_file_name" class="form-label">New File Name</label>
+            <input type="text" class="form-control" name="original_file_name" id="original_file_name" required />
           </div>
-          <div class="d-grid gap-2 mt-3">
-            <button type="submit" class="btn btn-primary">Save Changes</button>
-          </div>
+          <button type="submit" class="btn btn-primary">Update File Name</button>
         </form>
       </div>
     </div>
@@ -82,10 +81,10 @@
 </div>
 
 <script>
-  // Function to populate the edit modal with repository data
-  function setEditUserData(repoId, title) {
-    document.getElementById('edit_user_id').value = repoId;
-    document.getElementById('edit_name').value = title;
+  function setEditUserData(fileId, originalFileName) {
+    console.log("File ID set for editing:", fileId); // Log the file ID
+    document.getElementById('file_id').value = fileId; // Set file_id in the hidden input
+    document.getElementById('original_file_name').value = originalFileName; // Set the original file name in the input
   }
 </script>
 

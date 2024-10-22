@@ -34,6 +34,32 @@ if (isset($_GET['repo_id'])) {
 
 	<link href="../static/css/app.css" rel="stylesheet">
 	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <script>
+         function param(w, h) {
+            var width = w;
+            var height = h;
+            var left = (screen.width - width) / 2;
+            var top = (screen.height - height) / 2;
+            var params = 'width=' + width + ', height=' + height;
+            params += ', top=' + top + ', left=' + left;
+            params += ', directories=no';
+            params += ', location=no';
+            params += ', resizable=no';
+            params += ', status=no';
+            params += ', toolbar=no';
+            return params;
+        }
+
+        function openWin(url) {
+            myWindow = window.open(url, 'mywin', param(800, 500));
+            myWindow.focus();
+        }
+
+        function openCustom(url, w, h) {
+            myWindow = window.open(url, 'mywin', param(w, h));
+            myWindow.focus();
+        }
+        </script>
 </head>
 
 <body>
@@ -82,18 +108,26 @@ if (isset($_GET['repo_id'])) {
                 echo '<a href="repository.php" style="text-decoration: none; color: #007BFF; font-weight: bold;">' . officeName($user_data['office_id']) . '</a>';
             }
 
-            // Fetch the repository title
-            $repo_query = "SELECT title FROM repo_folder WHERE user_id = '$user_id' LIMIT 1"; // Adjust the query as necessary
-            $repo_result = $conn->query($repo_query);
-            $repo_title = "";
-            if ($repo_result->num_rows > 0) {
-                $repo_data = $repo_result->fetch_assoc();
-                $repo_title = htmlspecialchars($repo_data['title']); // Escape output
-            }
-
-            // Display the repository title as a clickable link if it exists
-            if ($repo_title) {
-                echo ' > ' . $repo_title ;
+            if (isset($_SESSION['repo_id'])) {
+                $repo_id = $_SESSION['repo_id'];
+            
+                // Fetch the repository title using repo_id
+                $repo_query = "SELECT title FROM repo_folder WHERE repo_id = '$repo_id' LIMIT 1"; // Adjusted query
+                $repo_result = $conn->query($repo_query);
+                $repo_title = "";
+                
+                if ($repo_result->num_rows > 0) {
+                    $repo_data = $repo_result->fetch_assoc();
+                    $repo_title = htmlspecialchars($repo_data['title']); // Escape output
+                }
+            
+                // Display the repository title as a clickable link if it exists
+                if ($repo_title) {
+                    echo ' > ' . $repo_title;
+                }
+            } else {
+                // Handle the error if repo_id is not defined in session
+                die("Repository ID is not defined.");
             }
         }
     }
@@ -117,6 +151,7 @@ if (isset($_GET['repo_id'])) {
         <thead>
             <tr>
                 <th>File Name</th>
+                <th>File Type</th>
                 <th>Date Created</th>
 				<th>Uploader Name</th>
                 <th>Action</th>
@@ -136,21 +171,30 @@ if (isset($_SESSION['repo_id'])) {
         while ($repo_data = $result->fetch_assoc()) {
             echo '<tr>
                 <td>' . htmlspecialchars($repo_data['original_file_name']) . '</td>
+                <td>' . htmlspecialchars($repo_data['file_type']) . '</td>
                 <td>' . htmlspecialchars($repo_data['dateUploaded']) . '</td>
                 <td>' . htmlspecialchars(UploaderName($repo_data['user_id'])) . '</td>
-                <td>
+                <td>                
+                 <i class="align-middle" type="button" 
+                   onclick="openCustom(\'../backend/view_file.php?file_id=' .  $repo_data['file_id'] . '\',400,300);"
+                   data-feather="eye" style="cursor: pointer;"></i>
                     <i class="align-middle" type="button" data-bs-toggle="modal" 
                        data-bs-target="#editModal" 
                        onclick="event.stopPropagation(); setEditUserData(' . $repo_data['file_id'] . ', \'' . addslashes($repo_data['original_file_name']) . '\')" 
                        data-feather="edit"></i>
-                    <i class="align-middle" type="button" data-bs-toggle="modal" 
+                    <i class="align-middle" 
+                       type="button" 
+                       data-bs-toggle="modal" 
                        data-bs-target="#deleteUserModal" 
                        onclick="event.stopPropagation(); setDeleteFolderId(' . htmlspecialchars($repo_data['file_id'], ENT_QUOTES) . ')" 
-                       data-feather="delete"></i>
+                       data-feather="delete" 
+                       style="cursor: pointer;">
+                    </i>
                 </td>
             </tr>';
         }
-    } 
+    }
+    
 }
 ?>
 
@@ -166,33 +210,7 @@ if (isset($_SESSION['repo_id'])) {
 				</div>
 			</main>
 
-			<footer class="footer">
-				<div class="container-fluid">
-					<div class="row text-muted">
-						<div class="col-6 text-start">
-							<p class="mb-0">
-								<a class="text-muted" href="https://adminkit.io/" target="_blank"><strong>AdminKit</strong></a> - <a class="text-muted" href="https://adminkit.io/" target="_blank"><strong>Bootstrap Admin Template</strong></a>								&copy;
-							</p>
-						</div>
-						<div class="col-6 text-end">
-							<ul class="list-inline">
-								<li class="list-inline-item">
-									<a class="text-muted" href="https://adminkit.io/" target="_blank">Support</a>
-								</li>
-								<li class="list-inline-item">
-									<a class="text-muted" href="https://adminkit.io/" target="_blank">Help Center</a>
-								</li>
-								<li class="list-inline-item">
-									<a class="text-muted" href="https://adminkit.io/" target="_blank">Privacy</a>
-								</li>
-								<li class="list-inline-item">
-									<a class="text-muted" href="https://adminkit.io/" target="_blank">Terms</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</footer>
+			<?php include'footer.php'; ?>
 		</div>
 	</div>
 

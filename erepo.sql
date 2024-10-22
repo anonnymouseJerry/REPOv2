@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 22, 2024 at 02:36 AM
+-- Generation Time: Oct 22, 2024 at 10:03 AM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.0.30
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -82,8 +82,9 @@ CREATE TABLE `repo_file` (
 --
 
 INSERT INTO `repo_file` (`file_id`, `original_file_name`, `dateUploaded`, `user_id`, `repo_id`, `saved_file_name`, `file_type`) VALUES
-(1, 'image.jpg', '2024-10-21 16:00:20', 1, 1, '', ''),
-(2, 'video.mp4', '2024-10-22 00:08:48', 1, 4, '', '');
+(19, 'sdsdsdsdsd', '2024-10-22 06:44:20', 1, 8, 'avatar-2.jpg', 'jpg'),
+(20, 'sample', '2024-10-22 07:32:31', 1, 8, 'Typography Pastel Supporting Quote Card (1).pdf', 'pdf'),
+(23, 'txt', '2024-10-22 07:49:54', 1, 8, 'New! Keyboard shortcuts … Drive key.txt', 'txt');
 
 -- --------------------------------------------------------
 
@@ -104,9 +105,7 @@ CREATE TABLE `repo_folder` (
 --
 
 INSERT INTO `repo_folder` (`repo_id`, `title`, `dateCreated`, `user_id`, `office_id`) VALUES
-(1, 'Cisco Webinar One', '2024-10-21 15:22:41', 1, 0),
-(4, 'Bea Folder', '2024-10-21 23:21:34', 1, 0),
-(5, 'Meyer Folder', '2024-10-22 00:32:08', 1, 0);
+(8, 'CIDCO', '2024-10-22 04:24:22', 2, 0);
 
 -- --------------------------------------------------------
 
@@ -130,9 +129,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `full_name`, `email`, `password`, `profile_picture`, `accesstype_id`, `office_id`, `dateCreated`) VALUES
-(1, 'Meyer Enriquez Castro', 'meyercastroe@gmail.com', '$2y$10$7aFZCdo7taxnLco11dkdiONixWCtE0HK7mDW9KJXTgB7pDGtKnEJO', 'uploads/6714e5b06f255_Meyer.jpg', 1, 2, '2024-10-20 12:43:34'),
-(2, 'Mergie Castro', 'mergie@gmail.com', '$2y$10$Vr0sl9flmiir4KEFdses0Op/pV/EdPMHUFI4Fci/BmBXoWXPsYhw2', NULL, 2, 2, '2024-10-20 13:48:39'),
-(4, 'Wilmer Castro', 'wilmer@gmail.com', '$2y$10$JeGjWhNihz5HwRfk2n4s2O0JhHnbrmG2JbCw8lCl9VeWCBPT5/k86', NULL, 1, 2, '2024-10-20 13:53:45');
+(1, 'Meyer Enriquez Castro', 'meyercastroe@gmail.com', '$2y$10$7aFZCdo7taxnLco11dkdiONixWCtE0HK7mDW9KJXTgB7pDGtKnEJO', 'uploads/6714e5b06f255_Meyer.jpg', 1, 1, '2024-10-20 12:43:34'),
+(2, 'Mergie Enriquez', 'mergie@gmail.com', '$2y$10$Vr0sl9flmiir4KEFdses0Op/pV/EdPMHUFI4Fci/BmBXoWXPsYhw2', 'uploads/671710e8ee43d_avatar-2.jpg', 2, 2, '2024-10-20 13:48:39'),
+(4, 'Wilmer Castro', 'wilmer@gmail.com', '$2y$10$JeGjWhNihz5HwRfk2n4s2O0JhHnbrmG2JbCw8lCl9VeWCBPT5/k86', NULL, 2, 2, '2024-10-20 13:53:45');
 
 --
 -- Indexes for dumped tables
@@ -187,13 +186,13 @@ ALTER TABLE `accesstype`
 -- AUTO_INCREMENT for table `repo_file`
 --
 ALTER TABLE `repo_file`
-  MODIFY `file_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `file_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- AUTO_INCREMENT for table `repo_folder`
 --
 ALTER TABLE `repo_folder`
-  MODIFY `repo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `repo_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `users`

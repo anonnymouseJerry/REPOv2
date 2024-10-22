@@ -43,12 +43,6 @@ if (isset($_SESSION['id'])) { // Assuming the session variable is 'id'
                                     <i class="align-middle" data-feather="user"></i> <span class="align-middle">Users</span>
                                 </a>
                             </li>
-                            
-                            <li class="sidebar-item ' . ($current_page == 'archived.php' ? 'active' : '') . '">
-                                <a class="sidebar-link" href="archived.php">
-                                    <i class="align-middle" data-feather="file"></i> <span class="align-middle">Archived</span>
-                                </a>
-                            </li>
                         </ul>
                     </div>
                 </nav>';
@@ -74,12 +68,6 @@ if (isset($_SESSION['id'])) { // Assuming the session variable is 'id'
                                 <li class="sidebar-item ' . ($current_page == 'repository.php' ? 'active' : '') . '">
                                     <a class="sidebar-link" href="repository.php">
                                         <i class="align-middle" data-feather="folder"></i> <span class="align-middle">Repositories</span>
-                                    </a>
-                                </li>
-                                
-                                <li class="sidebar-item ' . ($current_page == 'archived.php' ? 'active' : '') . '">
-                                    <a class="sidebar-link" href="archived.php">
-                                        <i class="align-middle" data-feather="file"></i> <span class="align-middle">Archived</span>
                                     </a>
                                 </li>
                             </ul>

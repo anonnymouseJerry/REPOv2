@@ -40,6 +40,22 @@
 			
 		<?php include'nav.php';?>
 
+		<?php
+
+if (isset($_SESSION['id'])) { // Assuming the session variable is 'id'
+    // Retrieve user data from the database
+    $user_id = $_SESSION['id'];
+    $query = "SELECT * FROM users WHERE id = '$user_id'"; // Use 'id' for the query
+    $result = $conn->query($query);
+
+    if ($result->num_rows == 1) {
+        $user_data = $result->fetch_assoc();
+
+        // Get the access type ID
+        $accesstype_id = $user_data['accesstype_id'];
+
+            if ($accesstype_id == 1) { ?>
+
 			<div class="main">
 
 			<?php include'header-nav.php';?>
@@ -108,7 +124,7 @@
 					// Output data of each row
 					while($row = $result->fetch_assoc()) {
 						echo '<tr onclick="handleRowClick(' . htmlspecialchars($row['repo_id'], ENT_QUOTES) . ')" style="cursor: pointer;">
-			<td>' . htmlspecialchars($row['title']) . '</td>
+			<td> <i class="align-middle mr-2" data-feather="folder"></i> ' . htmlspecialchars($row['title']) . '</td>
 			<td>' . htmlspecialchars($row['dateCreated']) . '</td>
 			<td>' . htmlspecialchars(UploaderName($row['user_id'])) . '</td>
 			<td>
@@ -136,34 +152,113 @@
 
 					</div>
 				</main>
+				<?php
+			}
+			else{ ?>
 
-				<footer class="footer">
-					<div class="container-fluid">
-						<div class="row text-muted">
-							<div class="col-6 text-start">
-								<p class="mb-0">
-									<a class="text-muted" href="https://adminkit.io/" target="_blank"><strong>AdminKit</strong></a> - <a class="text-muted" href="https://adminkit.io/" target="_blank"><strong>Bootstrap Admin Template</strong></a>								&copy;
-								</p>
+				<div class="main">
+	
+				<?php include'header-nav.php';?>
+	
+					<main class="content">
+						<div class="container-fluid p-0">
+							<div class="row">
+								<div class="col-12">
+									<div class="card">
+										<div class="card-header">
+											<div class="row">
+												<div class="col-6">
+												<h1 class="h3 mt-2"><strong>Repository</strong> |
+												<?php
+	
+												if (isset($_SESSION['id'])) { // Assuming the session variable is 'id'
+												// Retrieve user data from the database
+												$user_id = $_SESSION['id'];
+												$query = "SELECT * FROM users WHERE id = '$user_id'"; // Use 'id' for the query
+												$result = $conn->query($query);
+												
+												if ($result->num_rows == 1) {
+												$user_data = $result->fetch_assoc();
+												
+												// Get the access type ID
+												$office_id = $user_data['office_id'];
+												
+												if ($office_id == 0) {
+													echo "All Offices";
+												} else{
+													echo officeName($user_data['office_id']);
+												}
+												}
+												}
+												?> 
+												</h1> 
+	
+												</div>
+												<div class="col-6">
+	
+												<?php include'modal/repoModal.php';?>
+	
+													<button type="button" class="btn btn-primary float-end"
+													data-bs-toggle="modal" data-bs-target="#addUserModal">Create Folder</button>
+											</div>
+											</div>
+										</div>
+										<div class="card-body">
+										<div class="table-responsive">
+										<table id="usersTable" class="display">
+				<thead>
+					<tr>
+						<th>Title</th>
+						<th>Date Created</th>
+						<th>Uploader Name</th>
+						<th>Action</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php
+					// Fetch data
+					$sql = "SELECT * FROM repo_folder WHERE user_id = '$user_id'";
+					$result = $conn->query($sql);
+	
+					if ($result->num_rows > 0) {
+						// Output data of each row
+						while($row = $result->fetch_assoc()) {
+							echo '<tr onclick="handleRowClick(' . htmlspecialchars($row['repo_id'], ENT_QUOTES) . ')" style="cursor: pointer;">
+				<td> <i class="align-middle mr-2" data-feather="folder"></i> ' . htmlspecialchars($row['title']) . '</td>
+				<td>' . htmlspecialchars($row['dateCreated']) . '</td>
+				<td>' . htmlspecialchars(UploaderName($row['user_id'])) . '</td>
+				<td>
+					<i class="align-middle" type="button" data-bs-toggle="modal" 
+					data-bs-target="#editModal" 
+					onclick="event.stopPropagation(); setEditUserData(' . $row['repo_id'] . ', \'' . addslashes($row['title']) . '\')" 
+					data-feather="edit"></i>
+					<i class="align-middle" type="button" data-bs-toggle="modal" 
+					data-bs-target="#deleteUserModal" 
+					onclick="event.stopPropagation(); setDeleteFolderId(' . htmlspecialchars($row['repo_id'], ENT_QUOTES) . ')" 
+					data-feather="delete"></i>
+				</td>
+			</tr>';
+	
+						}
+					}
+					?>
+				</tbody>
+			</table>
+			</div>
+										</div>
+									</div>
+								</div>
 							</div>
-							<div class="col-6 text-end">
-								<ul class="list-inline">
-									<li class="list-inline-item">
-										<a class="text-muted" href="https://adminkit.io/" target="_blank">Support</a>
-									</li>
-									<li class="list-inline-item">
-										<a class="text-muted" href="https://adminkit.io/" target="_blank">Help Center</a>
-									</li>
-									<li class="list-inline-item">
-										<a class="text-muted" href="https://adminkit.io/" target="_blank">Privacy</a>
-									</li>
-									<li class="list-inline-item">
-										<a class="text-muted" href="https://adminkit.io/" target="_blank">Terms</a>
-									</li>
-								</ul>
-							</div>
+	
 						</div>
-					</div>
-				</footer>
+					</main>
+					<?php
+				}
+		}
+	}
+				?>
+
+				<?php include'footer.php'; ?>
 			</div>
 		</div>
 

@@ -92,8 +92,7 @@ include "../backEnd/function.php";
 								<table id="usersTable" class="display">
         <thead>
             <tr>
-                <th>ID</th>
-                <th>Full Name</th>
+                <th>Name</th>
                 <th>Email</th>
                 <th>Date Created</th>
                 <th>Action</th>
@@ -109,8 +108,7 @@ include "../backEnd/function.php";
                 // Output data of each row
                 while($row = $result->fetch_assoc()) {
                     echo '<tr>
-        <td>' . htmlspecialchars($row['id']) . '</td>
-        <td>' . htmlspecialchars($row['full_name']) . '</td>
+        <td><i class="align-middle mr-2" data-feather="user"></i>' . htmlspecialchars($row['full_name']) . '</td>
         <td>' . htmlspecialchars($row['email']) . '</td>
         <td>' . htmlspecialchars($row['dateCreated']) . '</td>
         <td>
@@ -139,33 +137,7 @@ include "../backEnd/function.php";
 				</div>
 			</main>
 
-			<footer class="footer">
-				<div class="container-fluid">
-					<div class="row text-muted">
-						<div class="col-6 text-start">
-							<p class="mb-0">
-								<a class="text-muted" href="https://adminkit.io/" target="_blank"><strong>AdminKit</strong></a> - <a class="text-muted" href="https://adminkit.io/" target="_blank"><strong>Bootstrap Admin Template</strong></a>								&copy;
-							</p>
-						</div>
-						<div class="col-6 text-end">
-							<ul class="list-inline">
-								<li class="list-inline-item">
-									<a class="text-muted" href="https://adminkit.io/" target="_blank">Support</a>
-								</li>
-								<li class="list-inline-item">
-									<a class="text-muted" href="https://adminkit.io/" target="_blank">Help Center</a>
-								</li>
-								<li class="list-inline-item">
-									<a class="text-muted" href="https://adminkit.io/" target="_blank">Privacy</a>
-								</li>
-								<li class="list-inline-item">
-									<a class="text-muted" href="https://adminkit.io/" target="_blank">Terms</a>
-								</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</footer>
+			<?php include'footer.php'; ?>
 		</div>
 	</div>
 
