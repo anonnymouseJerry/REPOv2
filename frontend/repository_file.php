@@ -1,6 +1,10 @@
 <?php include'../backend/session.php'; 
 include '../backend/db.php';
 include "../backEnd/function.php";
+
+if (isset($_GET['repo_id'])) {
+    $_SESSION['repo_id'] = intval($_GET['repo_id']); // Store it in session for further use
+}
 ?>
 
 <!DOCTYPE html>
@@ -100,10 +104,10 @@ include "../backEnd/function.php";
 										</div>
 										<div class="col-6">
 
-										<?php include'modal/repoModal.php';?>
+										<?php include'modal/fileModal.php';?>
 
 											<button type="button" class="btn btn-primary float-end"
-											data-bs-toggle="modal" data-bs-target="#addUserModal">Add File</button>
+											data-bs-toggle="modal" data-bs-target="#addFileModal">Add File</button>
 									</div>
 									</div>
 								</div>
@@ -119,33 +123,38 @@ include "../backEnd/function.php";
             </tr>
         </thead>
         <tbody>
-            <?php
-			// Fetch data
-			$sql = "SELECT * FROM repo_file";
-			$result = $conn->query($sql);
+		<?php
+if (isset($_SESSION['repo_id'])) {
+    $repo_id = $_SESSION['repo_id'];
 
-            if ($result->num_rows > 0) {
-                // Output data of each row
-                while($row = $result->fetch_assoc()) {
-                    echo '<tr>
-        <td>' . htmlspecialchars($row['file_name']) . '</td>
-        <td>' . htmlspecialchars($row['dateUploaded']) . '</td>
-        <td>' . htmlspecialchars(UploaderName($row['user_id'])) . '</td>
-        <td>
-            <i class="align-middle" type="button" data-bs-toggle="modal" 
-               data-bs-target="#editModal" 
-               onclick="event.stopPropagation(); setEditUserData(' . $row['repo_id'] . ', \'' . addslashes($row['file_name']) . '\')" 
-               data-feather="edit"></i>
-            <i class="align-middle" type="button" data-bs-toggle="modal" 
-               data-bs-target="#deleteUserModal" 
-               onclick="event.stopPropagation(); setDeleteFolderId(' . htmlspecialchars($row['repo_id'], ENT_QUOTES) . ')" 
-               data-feather="delete"></i>
-        </td>
-      </tr>';
+    // Use the correct table to fetch files related to the repo
+    $query = "SELECT * FROM repo_file WHERE repo_id = '$repo_id'";
+    $result = $conn->query($query);
 
-                }
-            }
-			?>
+    if ($result && $result->num_rows > 0) {
+        // Output data of each row
+        while ($repo_data = $result->fetch_assoc()) {
+            echo '<tr>
+                <td>' . htmlspecialchars($repo_data['original_file_name']) . '</td>
+                <td>' . htmlspecialchars($repo_data['dateUploaded']) . '</td>
+                <td>' . htmlspecialchars(UploaderName($repo_data['user_id'])) . '</td>
+                <td>
+                    <i class="align-middle" type="button" data-bs-toggle="modal" 
+                       data-bs-target="#editModal" 
+                       onclick="event.stopPropagation(); setEditUserData(' . $repo_data['file_id'] . ', \'' . addslashes($repo_data['original_file_name']) . '\')" 
+                       data-feather="edit"></i>
+                    <i class="align-middle" type="button" data-bs-toggle="modal" 
+                       data-bs-target="#deleteUserModal" 
+                       onclick="event.stopPropagation(); setDeleteFolderId(' . htmlspecialchars($repo_data['file_id'], ENT_QUOTES) . ')" 
+                       data-feather="delete"></i>
+                </td>
+            </tr>';
+        }
+    } 
+}
+?>
+
+
         </tbody>
     </table>
 	</div>
